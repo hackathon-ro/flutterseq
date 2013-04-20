@@ -1,0 +1,18 @@
+#N canvas 882 340 450 300 10;
+#X msg 330 169 \; pd dsp 1;
+#X obj 319 87 loadbang;
+#X obj 295 211 print Running;
+#X obj 318 125 delay 100;
+#X obj 110 218 dac~;
+#X obj 103 35 notein;
+#X obj 103 73 mtof;
+#X obj 111 130 osc~;
+#X obj 166 75 print note \$1;
+#X connect 1 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 0 8 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;
+#X connect 7 0 4 1;

@@ -13,7 +13,7 @@ be later mapped by the user to suit his needs (more buttons, encoders, pedals, o
 Contributors
 ============
 
-Antone, Richard
+Antone, Richard Horia Andrei
 Bârlădeanu, Ioan
 
 Category

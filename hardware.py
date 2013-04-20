@@ -10,6 +10,9 @@ msleep = lambda x: sleep(x/1000.0)
 
 
 
+class ButtonsInterface():
+  def __init__(self):
+
 class EncoderInterface():
   def __init__(self):
     self.encoders = [0,0,0,0,0,0,0,0]
@@ -17,15 +20,21 @@ class EncoderInterface():
     self.old = list()
     self.new = list()
     self.encoderInstance = Encoder()
+    self.encoderInstances = list()
     for i in range(16):
       self.old.append(0)
       self.new.append(0)
+      if (i%2 == 0):
+        self.encoderInstances.append(Encoder())
 
   def readHardware(self):
     self.old = self.new
     self.new = self.shifter.shift16()
     self.encoderInstance.update(self.new[0], self.new[1])
-
+    for i in range(0,4,2):
+      result = self.encoderInstances[i/2].update(self.new[i], self.new[i+1])
+      if (result):
+        print "Encoder %d: %d" % (i/2, self.encoderInstances[i/2].position)
 
 class InShifter():
   def __init__(self, clockPin, dataPin, loadPin):
@@ -33,7 +42,7 @@ class InShifter():
     self.p_data  = dataPin
     self.p_load  = loadPin
 
-    #setup gpio TODO: does it work while being instanced?
+    #setup gpio TODO: does it work under multiple instances?
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(self.p_clock, GPIO.OUT)
     GPIO.setup(self.p_data,  GPIO.IN)

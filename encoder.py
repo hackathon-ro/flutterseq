@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/bash
 
 class Encoder:
   def __init__(self, reverse = False):
@@ -10,6 +10,7 @@ class Encoder:
     self.reverse = reverse
 
   def update(self, a, b):
+    changed = False
     if (self.a != self.oa or self.b != self.ob):
       #print ("Val %1d-%1d") % (a,b)
       if (self.reverse == True):
@@ -22,13 +23,15 @@ class Encoder:
       elif (direction == 0):
         self.position -= 1
       #print "Dir", direction
-      print "Pos", self.position
+      #print "Pos", self.position
+      changed = True
       #print 
 
     self.oa = self.a
     self.ob = self.b
     self.a = a
     self.b = b
+    return changed
 
   def reset(self):
     self.position = 0

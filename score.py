@@ -1,6 +1,71 @@
 #!/usr/bin/python
 from general import PPQN, DEBUG
 
+class ScoreTrack:
+  def __init__ (self):
+    self.phrases = {}
+    self.channel = 0
+    self.trackName = "Unnamed Score Track"
+    self.midiTranspose = 0
+
+  def setMidiTranspose(self, value):
+    self.midiTranspose = value
+
+  def setMidiChannel(self, value):
+    if (value >= 1 and value <= 16):
+      self.channel = value - 1
+
+  def setName(self, value):
+    self.trackName = value
+
+  def getName(self):
+    return self.trackName
+
+  def getMidiChannel(self, value):
+    return self.channel + 1
+
+  def getLastBar(self):
+    a = self.phrases.keys()
+    print a
+
+  def addPhrase(self, phrase, bar):
+    # check if there's already a phrase at the required position
+    if (self.phrases.get(bar, None) != None):
+      if (DEBUG == 1):
+        print ("Replacing phrase at bar %d") % (bar)
+
+    self.phrases[bar] = phrase
+
+  def getMidiAt(self, bar, timeframe):
+    phrase = self.phrases.get(bar, None)
+    if (phrase != None):      # check if the bar has an associated phrase on the track
+      if (phrase.events.get(timeframe) != None):  # the phrase must have a SE list at the required timeframe
+        event = phrase.events[timeframe]
+        result = list()
+        if (DEBUG):
+          pass
+          #print "Events at %d,%d:" % (bar, timeframe),
+        for e in event:
+          if (DEBUG):
+            pass
+            #print ("%3d, ") % (e.note),
+          #temp = (0x90 | self.channel, e.note, e.velocity)
+          note = e.note
+          note+=self.midiTranspose
+          if (note < 0):
+            note = 0
+          if (note > 127):
+            note = 127
+          temp = (0x90, note, e.velocity)
+          result.append(temp)
+        if (DEBUG):
+          print
+        return result
+      else:
+        return None
+    else:
+      return None
+
 class ScorePhrase:
   def __init__ (self):
     self.events = {}
@@ -36,7 +101,11 @@ def main():
   a.addEvent(SE(48,  32, 24))
   a.addEvent(SE(49,  64, 24))
 
-# this will be an include later, but for now, we test it as a standalone item
+  b = ScoreTrack()
+  b.addPhrase(a, 1)
+  print b.getMidiAt(1, 0)
+  print b.getMidiAt(1, 24)
+
 if (__name__ == '__main__'):
   print "Running as a script"
   main()

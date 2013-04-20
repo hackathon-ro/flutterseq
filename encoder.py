@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/python
 
 class Encoder:
   def __init__(self, reverse = False):

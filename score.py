@@ -36,11 +36,6 @@ def main():
   a.addEvent(SE(48,  32, 24))
   a.addEvent(SE(49,  64, 24))
 
-  b = ScoreTrack()
-  b.addPhrase(a, 1)
-  print b.getMidiAt(1, 0)
-  print b.getMidiAt(1, 24)
-
 # this will be an include later, but for now, we test it as a standalone item
 if (__name__ == '__main__'):
   print "Running as a script"
